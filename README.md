@@ -2,7 +2,7 @@
 
 **Estudantes:** Thayson Guedes, Ricaelle Nascimento, Thiago Ferreira, Stênio Medeiros
 
-## 🚀 Descrição do Projeto: Pêndulo
+## 🚀 Descrição do Projeto: Sistema Solar
 
 Este projeto é uma simulação visual de um sistema solar, desenvolvida utilizando OpenGL e Pygame. O sistema solar é representado por planetas orbitando ao redor do Sol, com diferentes distâncias e velocidades orbitais. Cada planeta é representado por uma esfera que segue uma órbita elíptica, e o Sol é representado por uma esfera luminosa no centro. A simulação inclui detalhes como as texturas dos planetas e do Sol, além de iluminação e efeitos de profundidade em 3D.
 
