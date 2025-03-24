@@ -1,1 +1,8 @@
-python dependencies
+# python dependencies
+
+# OpenGl
+PyOpenGL 
+PyOpenGL_accelerate
+
+# Pygame
+pygame
