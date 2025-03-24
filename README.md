@@ -21,7 +21,9 @@ Este projeto é uma simulação visual de um sistema solar, desenvolvida utiliza
 - **OpenGL** para renderização 3D
 
 ### 📦 Instalação
-
+#### Ambiente Virtual - venv
+- Verificar dependências em ```requirements.txt```
+- instalar dependências com ```bash setup.sh```
 ## 🎮 Controles
 
 - **Setas direcionais:** Rotacionar a câmera.
