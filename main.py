@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-import math
 from opengl_init import init_opengl
 from graphics import draw_planet
 from textures import load_texture
@@ -24,9 +23,12 @@ class Planet:
 
 
 def main():
-    pygame.init()
     display = (800, 600)
-    pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+    
+    pygame.init()
+    pygame.display.set_caption('Sistema Solar')
+    pygame.display.set_icon(pygame.image.load('assets/earth.webp'))
+    pygame.display.set_mode(display, DOUBLEBUF | OPENGL | RESIZABLE)
     init_opengl()
 
     # Planetas do sistema solar
