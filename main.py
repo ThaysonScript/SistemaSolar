@@ -21,13 +21,18 @@ class Planet:
         self.angle += self.speed * dt  
 
     def draw(self):
-        draw_planet(self.distance, self.size, self.angle, self.texture)  
-
-        if self.has_ring:
-            glPushMatrix()
-            glTranslatef(self.distance, 0, 0)  
-            draw_ring(self.size * 1.5, self.size * 2.5, self.ring_texture)  
-            glPopMatrix()
+        glPushMatrix()
+        
+ 
+        glRotatef(self.angle, 0, 1, 0)  
+        glTranslatef(self.distance, 0, 0)  #
+   
+        draw_planet(0, self.size, 0, self.texture) 
+        
+        if self.has_ring and self.ring_texture:
+            draw_ring(self.size * 1.8, self.size * 2.5, self.ring_texture, self.angle)  
+        
+        glPopMatrix()
 
 
 def main():
@@ -39,7 +44,6 @@ def main():
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL | RESIZABLE)
     init_opengl()
 
-    # Planetas do sistema solar
     planets = [
         Planet(2.0, 0.3, 50, 'assets/mercury.jpg'), 
         Planet(3.5, 0.6, 35, 'assets/venus.jpg'),    
@@ -51,7 +55,6 @@ def main():
         Planet(19.0, 0.5, 10, 'assets/neptune.jpg')  
     ]
 
-    # Textura do Sol (no centro)
     sun_texture = load_texture('assets/sun.jpg')
 
     last_time = pygame.time.get_ticks() / 1000.0

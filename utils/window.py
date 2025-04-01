@@ -9,7 +9,10 @@ class Window:
         pg.display.set_caption('SolarSystem')
         pg.display.set_icon(pg.image.load('assets/earth.webp'))
         
-        
+    #criuando bg
+    
+    
+
     def create_window(self, width, height, color: tuple):
         running  = True
 
