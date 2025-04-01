@@ -30,3 +30,5 @@ class Window:
             pg.display.flip()
             
         pg.quit()
+
+
