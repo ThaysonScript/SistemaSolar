@@ -3,23 +3,31 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from opengl_init import init_opengl
-from graphics import draw_planet
+from graphics import *
 from textures import load_texture
 from camera import setup_camera, handle_camera_movement
 
 class Planet:
-    def __init__(self, distance, size, speed, texture_file):
+    def __init__(self, distance, size, speed, texture_file, has_ring=False, ring_texture=None):
         self.distance = distance  
         self.size = size          
         self.angle = 0            
         self.speed = speed       
-        self.texture = load_texture(texture_file)  
+        self.texture = load_texture(texture_file) 
+        self.has_ring = has_ring  
+        self.ring_texture = load_texture(ring_texture) if has_ring else None 
 
     def update(self, dt):
         self.angle += self.speed * dt  
 
     def draw(self):
         draw_planet(self.distance, self.size, self.angle, self.texture)  
+
+        if self.has_ring:
+            glPushMatrix()
+            glTranslatef(self.distance, 0, 0)  
+            draw_ring(self.size * 1.5, self.size * 2.5, self.ring_texture)  
+            glPopMatrix()
 
 
 def main():
@@ -38,7 +46,7 @@ def main():
         Planet(5.0, 0.7, 30, 'assets/earth.jpg'),    
         Planet(7.0, 0.5, 25, 'assets/mars.jpg'),     
         Planet(9.0, 1.0, 20, 'assets/jupiter.jpg'),  
-        Planet(12.0, 0.9, 15, 'assets/saturn.jpg'),  
+        Planet(12.0, 0.9, 15, 'assets/saturn.jpg', has_ring=True, ring_texture='assets/saturn_ring_alpha.png'),  
         Planet(15.0, 0.6, 12, 'assets/uranus.jpg'),  
         Planet(19.0, 0.5, 10, 'assets/neptune.jpg')  
     ]
