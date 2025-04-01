@@ -21,43 +21,26 @@ def draw_planet(distance, size, angle, texture):
     
     glPopMatrix()
 
-def draw_ring(inner_radius, outer_radius, angle, texture):
+def draw_ring(inner_radius, outer_radius, texture, angle=0):
     glPushMatrix()
     
-    glEnable(GL_TEXTURE_2D)
-    glBindTexture(GL_TEXTURE_2D, texture)
-    
-    # Aplica a mesma rotação que o planeta
-    glRotatef(angle, 0, 1, 0)
-    
-    # Cria um disco (anel) para representar os anéis de Saturno
-    quadric = gluNewQuadric()
-    gluQuadricTexture(quadric, GL_TRUE)
-    gluQuadricOrientation(quadric, GLU_OUTSIDE)
-    gluDisk(quadric, inner_radius, outer_radius, 32, 1)
-    
-    # Desenha o outro lado do anel
-    gluQuadricOrientation(quadric, GLU_INSIDE)
-    gluDisk(quadric, inner_radius, outer_radius, 32, 1)
-    
-    glDisable(GL_TEXTURE_2D)
-    
-    glPopMatrix()
+    # Aplicar a rotação do planeta ao anel
+    glRotatef(angle, 0, 1, 0)  # Faz o anel girar com o planeta
 
-
-
-def draw_ring(inner_radius, outer_radius, texture):
-    glPushMatrix()
-
-    glEnable(GL_TEXTURE_2D)
-    glBindTexture(GL_TEXTURE_2D, texture)
+    if texture:
+        glEnable(GL_TEXTURE_2D)
+        glBindTexture(GL_TEXTURE_2D, texture)
 
     quadric = gluNewQuadric()
     gluQuadricTexture(quadric, GL_TRUE)
-    
+
     glRotatef(90, 1, 0, 0)  
     gluDisk(quadric, inner_radius, outer_radius, 50, 1)  
 
-    glDisable(GL_TEXTURE_2D)
-    
+    if texture:
+        glDisable(GL_TEXTURE_2D)
+
     glPopMatrix()
+
+
+
