@@ -2,10 +2,11 @@ import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
 from opengl_init import init_opengl
 from graphics import *
 from textures import load_texture
-from camera import setup_camera, handle_camera_movement
+from camera import setup_camera, handle_camera_movement, movimento_mouse
 
 class Planet:
     def __init__(self, distance, size, speed, texture_file, has_ring=False, ring_texture=None):
@@ -22,13 +23,12 @@ class Planet:
 
     def draw(self):
         glPushMatrix()
-        
- 
+         
         glRotatef(self.angle, 0, 1, 0)  
-        glTranslatef(self.distance, 0, 0)  #
+        glTranslatef(self.distance, 0, 0)
    
         draw_planet(0, self.size, 0, self.texture) 
-        
+                
         if self.has_ring and self.ring_texture:
             draw_ring(self.size * 1.8, self.size * 2.5, self.ring_texture, self.angle)  
         
@@ -60,12 +60,26 @@ def main():
     background_texture = load_texture('assets/space_bg.jpeg')
 
     last_time = pygame.time.get_ticks() / 1000.0
+    
+    move_active = False
 
     while True:
-        for event in pygame.event.get():
+        for event in pygame.event.get(): 
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+            
+            elif event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    move_active = True
+                
+            elif event.type == MOUSEBUTTONUP:
+                if event.button == 1:
+                    move_active = False
+                
+            elif event.type == MOUSEMOTION and move_active:
+                movimento_mouse(event.rel[0], event.rel[1])
+
 
         keys = pygame.key.get_pressed()
         handle_camera_movement(keys)
@@ -110,6 +124,7 @@ def main():
         # Desenha os planetas
         for planet in planets:
             planet.draw()
+            draw_orbit(planet.distance)
 
         # Atualiza a tela
         pygame.display.flip()
