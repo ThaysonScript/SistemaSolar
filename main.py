@@ -103,9 +103,9 @@ def main():
          
         for planet in planets:
          planet.draw()
-
+         
         # Desenha o Sol (centro do sistema solar)
-        draw_planet(0, 1.7, 0, sun_texture) # Sol no centro
+        draw_planet(0, 1.2, 0, sun_texture) # Sol no centro
 
         # Desenha os planetas
         for planet in planets:
