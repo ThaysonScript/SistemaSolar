@@ -1,6 +1,9 @@
 import math
+
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
+
 from pygame.locals import *
 
 camera_angle_x = 15.0 
@@ -35,3 +38,10 @@ def handle_camera_movement(keys):
         camera_distance -= zoom_speed
     if keys[K_s]:
         camera_distance += zoom_speed
+        
+
+def movimento_mouse(x, y):
+    global camera_angle_x, camera_angle_y
+    
+    camera_angle_y += x * 0.2
+    camera_angle_x -= y * 0.2

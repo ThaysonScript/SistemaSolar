@@ -2,10 +2,11 @@ import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
 from opengl_init import init_opengl
 from graphics import *
 from textures import load_texture
-from camera import setup_camera, handle_camera_movement
+from camera import setup_camera, handle_camera_movement, movimento_mouse
 
 class Planet:
     def __init__(self, distance, size, speed, texture_file, has_ring=False, ring_texture=None):
@@ -58,12 +59,26 @@ def main():
     sun_texture = load_texture('assets/sun.jpg')
 
     last_time = pygame.time.get_ticks() / 1000.0
+    
+    move_active = False
 
     while True:
-        for event in pygame.event.get():
+        for event in pygame.event.get(): 
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+            
+            elif event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:  # Botão esquerdo do mouse
+                    move_active = True
+                
+            elif event.type == MOUSEBUTTONUP:
+                if event.button == 1:
+                    move_active = False
+                
+            elif event.type == MOUSEMOTION and move_active:
+                movimento_mouse(event.rel[0], event.rel[1])
+
 
         keys = pygame.key.get_pressed()
         handle_camera_movement(keys)
