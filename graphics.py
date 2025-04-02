@@ -65,3 +65,18 @@ def draw_background(texture):
     glEnable(GL_DEPTH_TEST)
     glPopMatrix()
 
+
+def draw_orbit(radius):
+    glPushMatrix()
+    glColor3f(0.5, 0.5, 0.5)  
+    glBegin(GL_LINE_LOOP)
+
+   
+    for i in range(100):
+        angle = 2 * math.pi * i / 100  # Calcula o ângulo do ponto
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        glVertex3f(x, 0, z) 
+
+    glEnd()
+    glPopMatrix()
