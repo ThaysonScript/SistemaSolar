@@ -25,7 +25,7 @@ class Planet:
         
  
         glRotatef(self.angle, 0, 1, 0)  
-        glTranslatef(self.distance, 0, 0)  
+        glTranslatef(self.distance, 0, 0)  #
    
         draw_planet(0, self.size, 0, self.texture) 
         
@@ -36,7 +36,7 @@ class Planet:
 
 
 def main():
-    display = (1366, 768)
+    display = (800, 600)
     
     pygame.init()
     pygame.display.set_caption('Sistema Solar')
@@ -81,14 +81,15 @@ def main():
             dust_particles.append((x, y, z))
 
         
-
+        # Atualiza a rotação dos planetas
         current_time = pygame.time.get_ticks() / 1000.0
         dt = current_time - last_time
         last_time = current_time
 
         for planet in planets:
             planet.update(dt)
-
+       
+        # Limpa a tela e configura a câmera
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         setup_camera()
     
@@ -103,14 +104,14 @@ def main():
         for planet in planets:
          planet.draw()
 
-       
-        draw_planet(0, 1.7, 0, sun_texture) 
+        # Desenha o Sol (centro do sistema solar)
+        draw_planet(0, 1.7, 0, sun_texture) # Sol no centro
 
-
+        # Desenha os planetas
         for planet in planets:
             planet.draw()
 
-
+        # Atualiza a tela
         pygame.display.flip()
         pygame.time.wait(20)
 
