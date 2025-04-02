@@ -8,6 +8,14 @@ from graphics import *
 from textures import load_texture
 from camera import setup_camera, handle_camera_movement, movimento_mouse
 
+
+# 🎶 Inicializando o mixer de áudio
+pygame.mixer.init()
+pygame.mixer.music.load('assets/space_ambient.mp3')  # Som ambiente espacial
+pygame.mixer.music.set_volume(0.5)  # Ajustando volume
+pygame.mixer.music.play(-1)  # 🔄 Reproduzir em loop infinito
+
+
 class Planet:
     def __init__(self, distance, size, speed, texture_file, has_ring=False, ring_texture=None):
         self.distance = distance  
