@@ -42,7 +42,28 @@ def draw_ring(inner_radius, outer_radius, texture, angle=0):
 
     glPopMatrix()
 
+# funççao para criar o bg
+def draw_background(texture):
+    glDisable(GL_DEPTH_TEST) 
+    glPushMatrix()
+    glLoadIdentity()
 
+    glEnable(GL_TEXTURE_2D)
+    glBindTexture(GL_TEXTURE_2D, texture)
+
+    glBegin(GL_QUADS)
+    
+
+    glTexCoord2f(0, 0); glVertex3f(-20, -20, -20)
+    glTexCoord2f(1, 0); glVertex3f( 20, -20, -20)
+    glTexCoord2f(1, 1); glVertex3f( 20,  20, -20)
+    glTexCoord2f(0, 1); glVertex3f(-20,  20, -20)
+    
+    glEnd()
+    
+    glDisable(GL_TEXTURE_2D)
+    glEnable(GL_DEPTH_TEST)
+    glPopMatrix()
 
 def draw_orbit(distance, segments=100):
     glLineWidth(2)
