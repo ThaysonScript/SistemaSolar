@@ -29,7 +29,7 @@ Este projeto é uma simulação visual de um sistema solar, desenvolvida utiliza
 - **Setas direcionais:** Rotacionar a câmera.
 - **Tecla W:** Aproximar a câmera.
 - **Tecla S:** Afastar a câmera.
-- **Tecla + (igual):** Aumentar o ângulo do movimento do pêndulo para a direita (frente).
-- **Tecla - (menos):** Diminuir o ângulo do movimento do pêndulo para a esquerda(atrás).
+- **Tecla + (igual):** Aumentar o ângulo do movimento para a direita (frente).
+- **Tecla - (menos):** Diminuir o ângulo do movimento para a esquerda(atrás).
 - **Tecla Esc:** Sair da simulação.
 
