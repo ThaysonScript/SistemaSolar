@@ -8,7 +8,7 @@ from pygame.locals import *
 
 camera_angle_x = 15.0 
 camera_angle_y = 0.0 
-camera_distance = 10.0 
+camera_distance = 30.0 
 
 def setup_camera():
     glMatrixMode(GL_MODELVIEW)

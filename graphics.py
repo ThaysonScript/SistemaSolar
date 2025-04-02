@@ -44,3 +44,14 @@ def draw_ring(inner_radius, outer_radius, texture, angle=0):
 
 
 
+def draw_orbit(distance, segments=100):
+    glLineWidth(2)
+    glColor4f(1.0, 1.0, 1.0, 0.5)
+    
+    glBegin(GL_LINE_LOOP)
+    for i in range(segments):
+        angle = 2 * math.pi * i / segments
+        x = distance * math.cos(angle)
+        z = distance * math.sin(angle)
+        glVertex3f(x, 0, z)  # Desenha a órbita no plano XZ
+    glEnd()

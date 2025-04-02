@@ -23,13 +23,12 @@ class Planet:
 
     def draw(self):
         glPushMatrix()
-        
- 
+         
         glRotatef(self.angle, 0, 1, 0)  
-        glTranslatef(self.distance, 0, 0)  #
+        glTranslatef(self.distance, 0, 0)
    
         draw_planet(0, self.size, 0, self.texture) 
-        
+                
         if self.has_ring and self.ring_texture:
             draw_ring(self.size * 1.8, self.size * 2.5, self.ring_texture, self.angle)  
         
@@ -69,7 +68,7 @@ def main():
                 return
             
             elif event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:  # Botão esquerdo do mouse
+                if event.button == 1:
                     move_active = True
                 
             elif event.type == MOUSEBUTTONUP:
@@ -101,6 +100,7 @@ def main():
         # Desenha os planetas
         for planet in planets:
             planet.draw()
+            draw_orbit(planet.distance)
 
         # Atualiza a tela
         pygame.display.flip()
