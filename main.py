@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -35,12 +35,40 @@ class Planet:
         glRotatef(self.angle, 0, 1, 0)  
         glTranslatef(self.distance, 0, 0)
    
-        draw_planet(0, self.size, 0, self.texture) 
+        # draw_planet(0, self.size, 0, self.texture) 
+        draw_planet(self.size, self.texture) 
                 
         if self.has_ring and self.ring_texture:
             draw_ring(self.size * 1.8, self.size * 2.5, self.ring_texture, self.angle)  
         
         glPopMatrix()
+        
+        
+def init_lighting():
+    """Configura apenas a iluminação para os planetas"""
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    # Luz solar estável (sem variação)
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 0.95, 0.9, 1.0))  # Amarelo claro
+    glLightfv(GL_LIGHT0, GL_POSITION, (0.0, 0.0, 0.0, 1.0))  # Origem no Sol
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.02)  # Decaimento suave
+
+class Sun:
+    def __init__(self, texture):
+        self.texture = load_texture(texture)
+    
+    def draw(self):
+        """Desenha o Sol sem efeitos de blush e sem ser afetado pela iluminação"""
+        glDisable(GL_LIGHTING)  # Importante: desativa iluminação para o Sol
+        glEnable(GL_TEXTURE_2D)
+        glBindTexture(GL_TEXTURE_2D, self.texture)
+        
+        # Desenha a esfera do Sol
+        glColor3f(1.0, 1.0, 1.0)  # Cor neutra para não alterar a textura
+        gluSphere(gluNewQuadric(), 1.2, 32, 32)
+        
+        glDisable(GL_TEXTURE_2D)
+        glEnable(GL_LIGHTING)  # Reativa iluminação para os planetas
 
 
 def main():
@@ -51,6 +79,7 @@ def main():
     pygame.display.set_icon(pygame.image.load('assets/earth.webp'))
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL | RESIZABLE)
     init_opengl()
+    init_lighting()
 
     planets = [
         Planet(2.0, 0.3, 50, 'assets/mercury.jpg'), 
@@ -64,7 +93,10 @@ def main():
         
     ]
 
-    sun_texture = load_texture('assets/sun.jpg')
+    # sun_texture = load_texture('assets/sun.jpg')
+    sun_texture = Sun('assets/sun.jpg')
+    
+    
     background_texture = load_texture('assets/space_bg.jpeg')
 
     last_time = pygame.time.get_ticks() / 1000.0
@@ -88,13 +120,12 @@ def main():
             elif event.type == MOUSEMOTION and move_active:
                 movimento_mouse(event.rel[0], event.rel[1])
 
-
+        glLightfv(GL_LIGHT0, GL_POSITION, (0.0, 0.0, 0.0, 1.0))
+        
         keys = pygame.key.get_pressed()
         handle_camera_movement(keys)
-        import random
 
-# Criamos um conjunto de partículas aleatórias
-          
+        # Criamos um conjunto de partículas aleatórias
         dust_particles = []
         for _ in range(300):  # 300 grãos de poeira
             x = random.uniform(-20, 20)
@@ -120,14 +151,13 @@ def main():
   
         for planet in planets:
            draw_orbit(planet.distance)
-
-
          
         for planet in planets:
          planet.draw()
          
         # Desenha o Sol (centro do sistema solar)
-        draw_planet(0, 1.2, 0, sun_texture) # Sol no centro
+        # draw_sun(sun_texture) # Sol no centro
+        sun_texture.draw()
 
         # Desenha os planetas
         for planet in planets:
