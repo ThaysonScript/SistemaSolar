@@ -24,7 +24,7 @@ def handle_camera_movement(keys):
     global camera_angle_x, camera_angle_y, camera_distance
 
     camera_speed = 0.5
-    zoom_speed = 0.1
+    zoom_speed = 3
 
     if keys[K_LEFT]:
         camera_angle_y -= camera_speed

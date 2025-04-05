@@ -3,6 +3,7 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from lighting import init_lighting
 from opengl_init import init_opengl
 from graphics import *
 from textures import load_texture
@@ -14,6 +15,28 @@ pygame.mixer.init()
 pygame.mixer.music.load('assets/space_ambient.mp3')  # Som ambiente espacial
 pygame.mixer.music.set_volume(0.5)  # Ajustando volume
 pygame.mixer.music.play(-1)  # 🔄 Reproduzir em loop infinito
+
+
+class Sun:
+    def __init__(self, distance, size, vel, texture):
+        self.distance = distance
+        self.size = size
+        self.vel = vel
+        self.texture = load_texture(texture)
+        self.quadric = gluNewQuadric()  # Usado para desenhar o disco
+        
+    def draw(self):
+        glPushMatrix()
+        
+        glDisable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+           
+        draw_planet(self.size, self.texture) 
+        
+        glDisable(GL_TEXTURE_2D)
+        glEnable(GL_LIGHTING)
+        
+        glPopMatrix()
 
 
 class Planet:
@@ -35,40 +58,12 @@ class Planet:
         glRotatef(self.angle, 0, 1, 0)  
         glTranslatef(self.distance, 0, 0)
    
-        # draw_planet(0, self.size, 0, self.texture) 
         draw_planet(self.size, self.texture) 
                 
         if self.has_ring and self.ring_texture:
             draw_ring(self.size * 1.8, self.size * 2.5, self.ring_texture, self.angle)  
         
         glPopMatrix()
-        
-        
-def init_lighting():
-    """Configura apenas a iluminação para os planetas"""
-    glEnable(GL_LIGHTING)
-    glEnable(GL_LIGHT0)
-    # Luz solar estável (sem variação)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 0.95, 0.9, 1.0))  # Amarelo claro
-    glLightfv(GL_LIGHT0, GL_POSITION, (0.0, 0.0, 0.0, 1.0))  # Origem no Sol
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.02)  # Decaimento suave
-
-class Sun:
-    def __init__(self, texture):
-        self.texture = load_texture(texture)
-    
-    def draw(self):
-        """Desenha o Sol sem efeitos de blush e sem ser afetado pela iluminação"""
-        glDisable(GL_LIGHTING)  # Importante: desativa iluminação para o Sol
-        glEnable(GL_TEXTURE_2D)
-        glBindTexture(GL_TEXTURE_2D, self.texture)
-        
-        # Desenha a esfera do Sol
-        glColor3f(1.0, 1.0, 1.0)  # Cor neutra para não alterar a textura
-        gluSphere(gluNewQuadric(), 1.2, 32, 32)
-        
-        glDisable(GL_TEXTURE_2D)
-        glEnable(GL_LIGHTING)  # Reativa iluminação para os planetas
 
 
 def main():
@@ -82,19 +77,17 @@ def main():
     init_lighting()
 
     planets = [
-        Planet(2.0, 0.3, 50, 'assets/mercury.jpg'), 
-        Planet(3.5, 0.6, 35, 'assets/venus.jpg'),    
-        Planet(5.0, 0.7, 30, 'assets/earth.jpg'),    
-        Planet(7.0, 0.5, 25, 'assets/mars.jpg'),     
-        Planet(9.0, 1.0, 20, 'assets/jupiter.jpg'),  
-        Planet(12.0, 0.9, 15, 'assets/saturn.jpg', has_ring=True, ring_texture='assets/saturn_ring_alpha.png'),  
-        Planet(15.0, 0.6, 12, 'assets/uranus.jpg'),  
-        Planet(19.0, 0.5, 10, 'assets/neptune.jpg')  
-        
+    Planet(14.5, 0.49, 23.7, 'assets/mercury.jpg'), 
+    Planet(27.0, 1.21, 17.5, 'assets/venus.jpg'),    
+    Planet(37.4, 1.27, 14.9, 'assets/earth.jpg'),    
+    Planet(57.0, 0.68, 12.0, 'assets/mars.jpg'),     
+    Planet(194.6, 13.98, 6.6, 'assets/jupiter.jpg'),  
+    Planet(257.5, 11.64, 4.85, 'assets/saturn.jpg', has_ring=True, ring_texture='assets/saturn_ring_alpha.png'),  
+    Planet(317.5, 5.07, 3.4, 'assets/uranus.jpg'),  
+    Planet(425.0, 4.92, 2.7, 'assets/neptune.jpg')  
     ]
 
-    # sun_texture = load_texture('assets/sun.jpg')
-    sun_texture = Sun('assets/sun.jpg')
+    sun_texture = Sun(0, 20, 0, 'assets/sun.jpg')
     
     
     background_texture = load_texture('assets/space_bg.jpeg')

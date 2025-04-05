@@ -2,22 +2,46 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import math
 
+# def draw_planet(size, texture):
+#     """Desenha um planeta com iluminação e textura"""
+#     glEnable(GL_TEXTURE_2D)
+#     glBindTexture(GL_TEXTURE_2D, texture)
+    
+#     # Configuração de materiais para resposta à luz
+#     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, [1.0, 1.0, 1.0, 1.0])
+#     glMaterialfv(GL_FRONT, GL_SPECULAR, [0.5, 0.5, 0.5, 1.0])
+#     glMateriali(GL_FRONT, GL_SHININESS, 50)
+    
+#     quadric = gluNewQuadric()
+#     gluQuadricTexture(quadric, GL_TRUE)
+#     gluQuadricNormals(quadric, GLU_SMOOTH)
+#     gluSphere(quadric, size, 32, 32)
+    
+#     glDisable(GL_TEXTURE_2D)
 def draw_planet(size, texture):
-    """Desenha um planeta com iluminação e textura"""
     glEnable(GL_TEXTURE_2D)
     glBindTexture(GL_TEXTURE_2D, texture)
-    
-    # Configuração de materiais para resposta à luz
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, [1.0, 1.0, 1.0, 1.0])
-    glMaterialfv(GL_FRONT, GL_SPECULAR, [0.5, 0.5, 0.5, 1.0])
-    glMateriali(GL_FRONT, GL_SHININESS, 50)
-    
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, (0.8, 0.8, 0.8, 1.0))
+    glMaterialf(GL_FRONT, GL_SHININESS, 32.0)
+
     quadric = gluNewQuadric()
     gluQuadricTexture(quadric, GL_TRUE)
-    gluQuadricNormals(quadric, GLU_SMOOTH)
-    gluSphere(quadric, size, 32, 32)
-    
+    gluQuadricNormals(quadric, GLU_SMOOTH)  # 💡 Normais suaves = Gouraud shading
+
+    gluSphere(quadric, size, 64, 64)
+
+    gluDeleteQuadric(quadric)
     glDisable(GL_TEXTURE_2D)
+    
+    
+    
+    
+    
+    
+    
+    
     
 
 def draw_ring(inner_radius, outer_radius, texture, angle=0):
