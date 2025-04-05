@@ -9,7 +9,7 @@ def init_opengl():
     glLoadIdentity()
     
     # gluPerspective(45, 800 / 600, 0.1, 50.0)
-    gluPerspective(45, 800 / 600, 0.1, 200.0)
+    gluPerspective(45, 800 / 600, 0.1, 2000.0)
     
     
     setup_lighting()

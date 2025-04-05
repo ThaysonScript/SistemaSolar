@@ -2,23 +2,30 @@ from OpenGL.GL import *
 
 def setup_lighting():
     glEnable(GL_LIGHTING)
-    
-    glEnable(GL_LIGHT0)  # Fonte de luz primária (o Sol)
-    
-    # Definições de luz para o Sol
-    light0_position = [0.0, 0.0, 0.0, 1.0]
-    light0_ambient = [0.2, 0.2, 0.2, 1.0]
-    light0_diffuse = [1.0, 1.0, 1.0, 1.0]
-    light0_specular = [1.0, 1.0, 1.0, 1.0]
+    glEnable(GL_LIGHT0)
+    glEnable(GL_COLOR_MATERIAL)
+    glShadeModel(GL_SMOOTH)
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
 
-    glLightfv(GL_LIGHT0, GL_POSITION, light0_position)
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse)
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular)
+    glLightfv(GL_LIGHT0, GL_POSITION, (0.0, 0.0, 0.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.1, 0.1, 0.1, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (4.0, 4.0, 3.5, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPECULAR, (2.0, 2.0, 2.0, 1.0))
 
-    # Definições de outras fontes de luz 
-    glEnable(GL_LIGHT1)
-    glEnable(GL_LIGHT2)
+    # Atenuação para simular intensidade realista
+    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0)
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.005)
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0001)
 
-    global_ambient = [0.2, 0.2, 0.2, 1.0]
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient)
+
+def init_lighting():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+
+    # 💡 Posição da luz (coloque no centro do sol)
+    glLightfv(GL_LIGHT0, GL_POSITION, (0.0, 0.0, 0.0, 1.0))
+
+    # ✨ Componentes da luz
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  (0.1, 0.1, 0.1, 1.0))    # Luz ambiente
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  (1.0, 1.0, 0.8, 1.0))    # Luz difusa (espalhada)
+    glLightfv(GL_LIGHT0, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))    # Reflexo brilhante

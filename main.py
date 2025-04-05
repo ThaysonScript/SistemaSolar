@@ -1,8 +1,9 @@
-import pygame
+import pygame, random
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from lighting import init_lighting
 from opengl_init import init_opengl
 from graphics import *
 from textures import load_texture
@@ -14,6 +15,28 @@ pygame.mixer.init()
 pygame.mixer.music.load('assets/space_ambient.mp3')  # Som ambiente espacial
 pygame.mixer.music.set_volume(0.5)  # Ajustando volume
 pygame.mixer.music.play(-1)  # 🔄 Reproduzir em loop infinito
+
+
+class Sun:
+    def __init__(self, distance, size, vel, texture):
+        self.distance = distance
+        self.size = size
+        self.vel = vel
+        self.texture = load_texture(texture)
+        self.quadric = gluNewQuadric()  # Usado para desenhar o disco
+        
+    def draw(self):
+        glPushMatrix()
+        
+        glDisable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+           
+        draw_planet(self.size, self.texture) 
+        
+        glDisable(GL_TEXTURE_2D)
+        glEnable(GL_LIGHTING)
+        
+        glPopMatrix()
 
 
 class Planet:
@@ -35,7 +58,7 @@ class Planet:
         glRotatef(self.angle, 0, 1, 0)  
         glTranslatef(self.distance, 0, 0)
    
-        draw_planet(0, self.size, 0, self.texture) 
+        draw_planet(self.size, self.texture) 
                 
         if self.has_ring and self.ring_texture:
             draw_ring(self.size * 1.8, self.size * 2.5, self.ring_texture, self.angle)  
@@ -51,20 +74,22 @@ def main():
     pygame.display.set_icon(pygame.image.load('assets/earth.webp'))
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL | RESIZABLE)
     init_opengl()
+    init_lighting()
 
     planets = [
-        Planet(2.0, 0.3, 50, 'assets/mercury.jpg'), 
-        Planet(3.5, 0.6, 35, 'assets/venus.jpg'),    
-        Planet(5.0, 0.7, 30, 'assets/earth.jpg'),    
-        Planet(7.0, 0.5, 25, 'assets/mars.jpg'),     
-        Planet(9.0, 1.0, 20, 'assets/jupiter.jpg'),  
-        Planet(12.0, 0.9, 15, 'assets/saturn.jpg', has_ring=True, ring_texture='assets/saturn_ring_alpha.png'),  
-        Planet(15.0, 0.6, 12, 'assets/uranus.jpg'),  
-        Planet(19.0, 0.5, 10, 'assets/neptune.jpg')  
-        
+    Planet(14.5, 0.49, 23.7, 'assets/mercury.jpg'), 
+    Planet(27.0, 1.21, 17.5, 'assets/venus.jpg'),    
+    Planet(37.4, 1.27, 14.9, 'assets/earth.jpg'),    
+    Planet(57.0, 0.68, 12.0, 'assets/mars.jpg'),     
+    Planet(194.6, 13.98, 6.6, 'assets/jupiter.jpg'),  
+    Planet(257.5, 11.64, 4.85, 'assets/saturn.jpg', has_ring=True, ring_texture='assets/saturn_ring_alpha.png'),  
+    Planet(317.5, 5.07, 3.4, 'assets/uranus.jpg'),  
+    Planet(425.0, 4.92, 2.7, 'assets/neptune.jpg')  
     ]
 
-    sun_texture = load_texture('assets/sun.jpg')
+    sun_texture = Sun(0, 20, 0, 'assets/sun.jpg')
+    
+    
     background_texture = load_texture('assets/space_bg.jpeg')
 
     last_time = pygame.time.get_ticks() / 1000.0
@@ -88,13 +113,12 @@ def main():
             elif event.type == MOUSEMOTION and move_active:
                 movimento_mouse(event.rel[0], event.rel[1])
 
-
+        glLightfv(GL_LIGHT0, GL_POSITION, (0.0, 0.0, 0.0, 1.0))
+        
         keys = pygame.key.get_pressed()
         handle_camera_movement(keys)
-        import random
 
-# Criamos um conjunto de partículas aleatórias
-          
+        # Criamos um conjunto de partículas aleatórias
         dust_particles = []
         for _ in range(300):  # 300 grãos de poeira
             x = random.uniform(-20, 20)
@@ -120,14 +144,13 @@ def main():
   
         for planet in planets:
            draw_orbit(planet.distance)
-
-
          
         for planet in planets:
          planet.draw()
          
         # Desenha o Sol (centro do sistema solar)
-        draw_planet(0, 1.2, 0, sun_texture) # Sol no centro
+        # draw_sun(sun_texture) # Sol no centro
+        sun_texture.draw()
 
         # Desenha os planetas
         for planet in planets:
