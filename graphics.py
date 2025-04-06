@@ -2,8 +2,22 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import math
 
+def apply_material():
+    ambient = [0.2, 0.2, 0.2, 1.0]
+    diffuse = [0.7, 0.7, 0.7, 1.0]
+    specular = [1.0, 1.0, 1.0, 1.0]
+    shininess = 50.0
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, ambient)
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse)
+    glMaterialfv(GL_FRONT, GL_SPECULAR, specular)
+    glMaterialf(GL_FRONT, GL_SHININESS, shininess)
+
+
 def draw_planet(distance, size, angle, texture,rotation_angle=0):
     glPushMatrix()
+    apply_material()
+
     
     
     glEnable(GL_TEXTURE_2D)
@@ -29,6 +43,8 @@ def draw_planet(distance, size, angle, texture,rotation_angle=0):
 
 def draw_ring(inner_radius, outer_radius, texture, angle=0):
     glPushMatrix()
+    apply_material()
+
     
     # Aplicar a rotação do planeta ao anel
     glRotatef(angle, 0, 1, 0)  # Faz o anel girar com o planeta
