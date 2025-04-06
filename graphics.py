@@ -2,47 +2,30 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import math
 
-# def draw_planet(size, texture):
-#     """Desenha um planeta com iluminação e textura"""
-#     glEnable(GL_TEXTURE_2D)
-#     glBindTexture(GL_TEXTURE_2D, texture)
+def draw_planet(distance, size, angle, texture,rotation_angle=0):
+    glPushMatrix()
     
-#     # Configuração de materiais para resposta à luz
-#     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, [1.0, 1.0, 1.0, 1.0])
-#     glMaterialfv(GL_FRONT, GL_SPECULAR, [0.5, 0.5, 0.5, 1.0])
-#     glMateriali(GL_FRONT, GL_SHININESS, 50)
     
-#     quadric = gluNewQuadric()
-#     gluQuadricTexture(quadric, GL_TRUE)
-#     gluQuadricNormals(quadric, GLU_SMOOTH)
-#     gluSphere(quadric, size, 32, 32)
-    
-#     glDisable(GL_TEXTURE_2D)
-def draw_planet(size, texture):
     glEnable(GL_TEXTURE_2D)
     glBindTexture(GL_TEXTURE_2D, texture)
+    
+    # Aplica a rotação no eixo Y e a translação para a órbita
+    glRotatef(angle, 0, 1, 0)
+    glTranslatef(distance, 0, 0)  # Distância do planeta em relação ao Sol
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
-    glMaterialfv(GL_FRONT, GL_SPECULAR, (0.8, 0.8, 0.8, 1.0))
-    glMaterialf(GL_FRONT, GL_SHININESS, 32.0)
+    
+    
+    # Aplica a rotação em torno do próprio eixo (rotação axial)
+    glRotatef(rotation_angle, 0, 1, 0)
 
+    # Cria a esfera para representar o planeta
     quadric = gluNewQuadric()
     gluQuadricTexture(quadric, GL_TRUE)
-    gluQuadricNormals(quadric, GLU_SMOOTH)  # 💡 Normais suaves = Gouraud shading
+    gluSphere(quadric, size, 20, 20)
 
-    gluSphere(quadric, size, 64, 64)
-
-    gluDeleteQuadric(quadric)
     glDisable(GL_TEXTURE_2D)
     
-    
-    
-    
-    
-    
-    
-    
-    
+    glPopMatrix()
 
 def draw_ring(inner_radius, outer_radius, texture, angle=0):
     glPushMatrix()
