@@ -64,6 +64,7 @@ class Moon:
         glPushMatrix()
         glRotatef(self.angle, 0, 1, 0)
         glTranslatef(self.distance, 0, 0)
+        apply_material()
         draw_planet(0, self.size, 0, self.texture, self.rotation_angle)
         glPopMatrix()
 
@@ -162,6 +163,7 @@ def main():
          planet.draw()
          
         # Desenha o Sol (centro do sistema solar)
+        apply_material()
         draw_planet(0, 1.2, 0, sun_texture) # Sol no centro
 
         # Desenha os planetas
